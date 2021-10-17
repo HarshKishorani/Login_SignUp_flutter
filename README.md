@@ -143,7 +143,7 @@ Future signInWithGoogle() async {
       idToken: googleAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
+    // Once signed in, return the User
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.signInWithCredential(credential);
@@ -169,6 +169,7 @@ Future signInWithGoogle() async {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
       } else {
+      print("Null value received from Google");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
             value,
@@ -210,5 +211,52 @@ Future signInWithGoogle() async {
 3. Copy ***App ID*** and ***App Secret*** from your Facebook Project Basic Settings and paste them into Firebase Facebook dialog box.
 
 - **Setup Facebook Authentication**
-1. 
-    
+1. Add [`flutter_facebook_auth`](https://pub.dev/packages/flutter_facebook_auth) dependency in your pubspec.ymal file.
+2. In your auth.dart, import flutter_facebook_auth : `import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';`
+3. Add the following Funtion to your AuthMethods class :
+```
+Future signInWithFacebook() async {
+    try{
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance.login();
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken.token);
+
+    // Once signed in, return the User
+    UserCredential userCredential=  await FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+    User user = userCredential.user;
+    return user;
+      }
+    on Exception catch(error){
+      print("Error FaceBook : $error");
+    }catch(error){
+      print(error);
+    }
+  }
+  ```
+ This Function returns the [`User`](https://pub.dev/documentation/firebase/latest/firebase/User-class.html) type.
+ 
+ 4. To use the above given function, create an instance of AuthMethods and facebookAuth() Function in your Login/Signup page.
+ ```
+  AuthMethods authMethods = new AuthMethods();
+  //Facebook Sign In function
+  facebookAuth() async {
+    await authMethods.signInWithFacebook().then((value) {
+      if (value != null) {
+        print("Done Facebook Sign In");
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Demo()));
+      } else {
+        print("Null Value Received for Facebook User");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            value,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
+      }
+    });
+  }
+  ```
+ 5. Create a Sign In with Facebook / Sign Up with Facebook button with onPressed Property to call the facebookAuth() Function.
