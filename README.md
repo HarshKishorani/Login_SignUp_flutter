@@ -260,3 +260,11 @@ Future signInWithFacebook() async {
   }
   ```
  5. Create a Sign In with Facebook / Sign Up with Facebook button with onPressed Property to call the facebookAuth() Function.
+
+
+- [ ] **6. Email Password SignOut**
+- [ ] **7. Google Sign Out**
+- [ ] **8. Facebook Sign Out**
+- [ ] **9. Twitter Sign In**
+- [ ] **10. Twitter Sign Out**
+- [ ] **11. Phone Authentication**
