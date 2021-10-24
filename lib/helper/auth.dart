@@ -1,26 +1,30 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
 class AuthMethods {
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<UserCredential> signInWithFacebook() async {
-    try{
-    // Trigger the sign-in flow
-    final LoginResult loginResult = await FacebookAuth.instance.login();
+  Future signInWithFacebook() async {
+    try {
+      // Trigger the sign-in flow
+      final LoginResult loginResult = await FacebookAuth.instance.login();
 
-    // Create a credential from the access token
-    final OAuthCredential facebookAuthCredential = FacebookAuthProvider.credential(loginResult.accessToken.token);
+      // Create a credential from the access token
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken.token);
 
-    // Once signed in, return the UserCredential
-    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);}
-    on Exception catch(error){
+      // Once signed in, return the User
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
+      User user = userCredential.user;
+      return user;
+    } on Exception catch (error) {
       print("Error FaceBook : $error");
-    }catch(error){
+    } catch (error) {
       print(error);
     }
   }
-
 
   Future EmailPassSignIn(String email, String password) async {
     try {
@@ -48,7 +52,6 @@ class AuthMethods {
 
   Future SignOut() async => await FirebaseAuth.instance.signOut();
 
-
   Future signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
@@ -70,9 +73,9 @@ class AuthMethods {
       User user = userCredential.user;
       return user;
     } on FirebaseAuthException catch (error) {
-      print(error);
+      return error;
     } catch (error) {
-      print(error);
+      return error;
     }
   }
 }

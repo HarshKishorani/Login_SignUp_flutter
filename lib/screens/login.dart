@@ -19,20 +19,25 @@ class _LogInScreenState extends State<LogInScreen> {
   AuthMethods authMethods = new AuthMethods();
 
   //Facebook Sign In function
-  facebookSignIn() async{
+  facebookSignIn() async {
     await authMethods.signInWithFacebook().then((value) {
       if (value != null) {
-        print("Done Facebook Sign In");
+        print("Done Facebook Sign In : $value");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
       } else {
         print("Null Value Received for Facebook User");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            value,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
       }
     });
   }
 
-
-// Google Sign In function
+  // Google Sign In function
   GsignIn() async {
     await authMethods.signInWithGoogle().then((value) {
       if (value != null) {
@@ -40,11 +45,16 @@ class _LogInScreenState extends State<LogInScreen> {
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
       } else {
-        print("Null Value Received for google User");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            value,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
       }
     });
   }
-  
+
   //Email Password SIgn in Function
   SignIn() async {
     print("Email : $email.text");
@@ -217,7 +227,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   GestureDetector(
-                    onTap: () =>facebookSignIn(),
+                    onTap: () => facebookSignIn(),
                     child: Container(
                       height: MediaQuery.of(context).size.height * 0.06,
                       width: MediaQuery.of(context).size.width * 0.36,
