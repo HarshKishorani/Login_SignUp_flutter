@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_ui_starter/helper/auth.dart';
 import 'package:login_signup_ui_starter/screens/login.dart';
@@ -29,9 +30,61 @@ class _CreateAccountState extends State<CreateAccount> {
       if (value != null) {
         print("Done Google Sign In");
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Demo()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: value,
+                    )));
       } else {
         print("Null Value Received for google User");
+      }
+    });
+  }
+
+  //Facebook Sign In function
+  facebookSignIn() async {
+    await authMethods.signInWithFacebook().then((value) {
+      if (value != null) {
+        print("Done Facebook Sign In : $value");
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: value,
+                    )));
+      } else {
+        print("Null Value Received for Facebook User");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            value,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
+      }
+    });
+  }
+
+  //Email Sign up
+  SignUp() async {
+    print("Email : $email.text");
+    await authMethods.EmailPassSignUp(email.text, password.text).then((result) {
+      if (result != null) {
+        print("Sign Up");
+        User user = result;
+        user.updateDisplayName(firstName.text + " " + lastName.text);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: user,
+                    )));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            result,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
       }
     });
   }
@@ -210,24 +263,7 @@ class _CreateAccountState extends State<CreateAccount> {
             Padding(
                 padding: kDefaultPadding,
                 child: GestureDetector(
-                  onTap: () async {
-                    print("Email : $email.text");
-                    await authMethods.EmailPassSignUp(email.text, password.text)
-                        .then((result) {
-                      if (result == null) {
-                        print("Sign Up");
-                        Navigator.pushReplacement(context,
-                            MaterialPageRoute(builder: (context) => Demo()));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                            result,
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ));
-                      }
-                    });
-                  },
+                  onTap: () => SignUp(),
                   child: Container(
                     alignment: Alignment.center,
                     height: MediaQuery.of(context).size.height * 0.08,
@@ -260,25 +296,28 @@ class _CreateAccountState extends State<CreateAccount> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Container(
-                    height: MediaQuery.of(context).size.height * 0.06,
-                    width: MediaQuery.of(context).size.width * 0.36,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey[300])),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image(
-                          height: 20,
-                          width: 20,
-                          image: AssetImage('images/facebook.png'),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text('Facebook'),
-                      ],
+                  GestureDetector(
+                    onTap: () => facebookSignIn(),
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.36,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.grey[300])),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image(
+                            height: 20,
+                            width: 20,
+                            image: AssetImage('images/facebook.png'),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text('Facebook'),
+                        ],
+                      ),
                     ),
                   ),
                   GestureDetector(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:login_signup_ui_starter/helper/auth.dart';
 import 'package:login_signup_ui_starter/screens/reset_password.dart';
@@ -24,7 +25,11 @@ class _LogInScreenState extends State<LogInScreen> {
       if (value != null) {
         print("Done Facebook Sign In : $value");
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Demo()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: value,
+                    )));
       } else {
         print("Null Value Received for Facebook User");
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -43,7 +48,11 @@ class _LogInScreenState extends State<LogInScreen> {
       if (value != null) {
         print("Done Google Sign In");
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Demo()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: value,
+                    )));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(
@@ -59,10 +68,14 @@ class _LogInScreenState extends State<LogInScreen> {
   SignIn() async {
     print("Email : $email.text");
     await authMethods.EmailPassSignIn(email.text, password.text).then((result) {
-      if (result == null) {
+      if (result is User) {
         print("Done Log In");
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Demo()));
+            context,
+            MaterialPageRoute(
+                builder: (context) => Demo(
+                      user: result,
+                    )));
       } else {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(

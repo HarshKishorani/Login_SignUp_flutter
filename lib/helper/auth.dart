@@ -30,7 +30,8 @@ class AuthMethods {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      return null;
+      User user = userCredential.user;
+      return user;
     } on FirebaseAuthException catch (error) {
       return error.message;
     } catch (error) {
@@ -42,7 +43,8 @@ class AuthMethods {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      return null;
+      User user = userCredential.user;
+      return user;
     } on FirebaseAuthException catch (error) {
       return error.message;
     } catch (error) {
@@ -50,7 +52,9 @@ class AuthMethods {
     }
   }
 
-  Future SignOut() async => await FirebaseAuth.instance.signOut();
+  Future SignOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   Future signInWithGoogle() async {
     // Trigger the authentication flow
