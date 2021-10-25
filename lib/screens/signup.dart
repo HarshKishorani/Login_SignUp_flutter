@@ -68,8 +68,8 @@ class _CreateAccountState extends State<CreateAccount> {
   SignUp() async {
     print("Email : $email.text");
     await authMethods.EmailPassSignUp(email.text, password.text).then((result) {
-      if (result != null) {
-        print("Sign Up");
+      if (result is User) {
+        print("Done Sign Up");
         User user = result;
         user.updateDisplayName(firstName.text + " " + lastName.text);
         Navigator.pushReplacement(
