@@ -38,7 +38,7 @@
   SignIn() async {
     print("Email : $email.text");
     await authMethods.EmailPassSignIn(email.text, password.text).then((result) {
-      if (result != null) {
+      if (result is User) {
         print("Done Log In");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
@@ -90,7 +90,7 @@
   SignUp() async {
     print("Email : $email.text");
     await authMethods.EmailPassSignUp(email.text, password.text).then((result) {
-      if (result != null) {
+      if (result is User) {
         print("Done Sign Up");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
@@ -164,7 +164,7 @@ Future signInWithGoogle() async {
   AuthMethods authmethods = new AuthMethods();
   googleAuth() async {
     await authMethods.signInWithGoogle().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Google Sign In");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
@@ -243,7 +243,7 @@ Future signInWithFacebook() async {
   //Facebook Sign In function
   facebookAuth() async {
     await authMethods.signInWithFacebook().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Facebook Sign In");
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => Demo()));
