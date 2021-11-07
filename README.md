@@ -260,11 +260,62 @@ Future signInWithFacebook() async {
   }
   ```
  5. Create a Sign In with Facebook / Sign Up with Facebook button with onPressed Property to call the facebookAuth() Function.
+## Sign Out
+1. import Firebase Auth in auth.dart.
+`import 'package:firebase_auth/firebase_auth.dart';`
+2. Create a Firebase Instance in class AuthMethods.
+`FirebaseAuth auth = FirebaseAuth.instance;`
+3. Create the following function for *Sign Out*.
+```
+Future SignOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+```
+4. To use the above given function, create a button and add following function in onPressed.
+```
+onPressed: () {
+      AuthMethods authmethods = new AuthMethods();
+      authMethods.SignOut();
+      Navigator.pushReplacement(context,
+      MaterialPageRoute(builder: (context) => Login()));
+    }
+```
+## Auth State of the User
+1. We will use the Stream Builder and a Landing Page to check the authentication state of User
+2. Create a new dart file named landingPage.dart and a stateless widget ***LandingPage*** in it.
+3. Your Landing page widget should return following,
+```
+class LandingPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          User user = snapshot.data;
+          if (user == null) {
+            return LogInScreen();
+          }
+          return Demo();
+        } else {
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+```
+Following diagram shows the working of auth state using Landing Page
 
+![](https://codewithandrea.com/articles/simple-authentication-flow-with-flutter/images/simple-auth-flow-widget-tree-firebase-auth.png)
 
-- [ ] **6. Email Password SignOut**
-- [ ] **7. Google Sign Out**
-- [ ] **8. Facebook Sign Out**
-- [ ] **9. Twitter Sign In**
-- [ ] **10. Twitter Sign Out**
-- [ ] **11. Phone Authentication**
+`FirebaseAuth.instance.authStateChanges()` provides the stream of changes in authentication state.
+`FirebaseAuth.instance.currentUser` returns current Signed In [`User`](https://pub.dev/documentation/firebase/latest/firebase/User-class.html)
+
+***We can use Provider and State Management to get the authentication status of the User***
+- [ ] **Auth State Using Privider** 
+- [ ] **Phone Authentication**
