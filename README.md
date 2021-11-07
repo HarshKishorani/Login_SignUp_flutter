@@ -310,6 +310,7 @@ class LandingPage extends StatelessWidget {
 }
 ```
 4. Add LandingPage to your *home* of your Material App in main.dart.
+
 Following diagram shows the working of auth state using Landing Page
 
 ![](https://codewithandrea.com/articles/simple-authentication-flow-with-flutter/images/simple-auth-flow-widget-tree-firebase-auth.png)
