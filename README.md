@@ -309,12 +309,13 @@ class LandingPage extends StatelessWidget {
   }
 }
 ```
+4. Add LandingPage to your *home* of your Material App in main.dart.
 Following diagram shows the working of auth state using Landing Page
 
 ![](https://codewithandrea.com/articles/simple-authentication-flow-with-flutter/images/simple-auth-flow-widget-tree-firebase-auth.png)
 
 `FirebaseAuth.instance.authStateChanges()` provides the stream of changes in authentication state.
-`FirebaseAuth.instance.currentUser` returns current Signed In [`User`](https://pub.dev/documentation/firebase/latest/firebase/User-class.html)
+`FirebaseAuth.instance.currentUser` returns current Signed In [`User`](https://pub.dev/documentation/firebase/latest/firebase/User-class.html).
 
 ***We can use Provider and State Management to get the authentication status of the User***
 - [ ] **Auth State Using Privider** 
