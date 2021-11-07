@@ -319,5 +319,6 @@ Following diagram shows the working of auth state using Landing Page
 `FirebaseAuth.instance.currentUser` returns current Signed In [`User`](https://pub.dev/documentation/firebase/latest/firebase/User-class.html).
 
 ***We can use Provider and State Management to get the authentication status of the User***
-- [ ] **Auth State Using Privider** 
+- [ ] **Auth State Using Provider** 
 - [ ] **Phone Authentication**
+- [ ] **Reset Password**
