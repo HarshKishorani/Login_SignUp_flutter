@@ -22,7 +22,7 @@ class _LogInScreenState extends State<LogInScreen> {
   //Facebook Sign In function
   facebookSignIn() async {
     await authMethods.signInWithFacebook().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Facebook Sign In : $value");
         Navigator.pushReplacement(
             context,
@@ -45,7 +45,7 @@ class _LogInScreenState extends State<LogInScreen> {
   // Google Sign In function
   GsignIn() async {
     await authMethods.signInWithGoogle().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Google Sign In");
         Navigator.pushReplacement(
             context,

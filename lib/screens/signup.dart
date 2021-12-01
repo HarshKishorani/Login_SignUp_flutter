@@ -27,7 +27,7 @@ class _CreateAccountState extends State<CreateAccount> {
 // Google Sign In function
   GsignIn() async {
     await authMethods.signInWithGoogle().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Google Sign In");
         Navigator.pushReplacement(
             context,
@@ -36,7 +36,12 @@ class _CreateAccountState extends State<CreateAccount> {
                       user: value,
                     )));
       } else {
-        print("Null Value Received for google User");
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            value,
+            style: TextStyle(fontSize: 16),
+          ),
+        ));
       }
     });
   }
@@ -44,7 +49,7 @@ class _CreateAccountState extends State<CreateAccount> {
   //Facebook Sign In function
   facebookSignIn() async {
     await authMethods.signInWithFacebook().then((value) {
-      if (value != null) {
+      if (value is User) {
         print("Done Facebook Sign In : $value");
         Navigator.pushReplacement(
             context,
@@ -70,8 +75,11 @@ class _CreateAccountState extends State<CreateAccount> {
     await authMethods.EmailPassSignUp(email.text, password.text).then((result) {
       if (result is User) {
         print("Done Sign Up");
+
+        // To Update display name of the User
         User user = result;
         user.updateDisplayName(firstName.text + " " + lastName.text);
+
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
